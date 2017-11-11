@@ -3,7 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
-
+import math
 
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
@@ -34,8 +34,59 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    spaces = game.get_blank_spaces()
+
+    def get_moves(board, loc):
+        """Generate the list of possible moves for an L-shaped motion (like a
+        knight in chess).
+        """
+        if loc == board.NOT_MOVED:
+            return board.get_blank_spaces()
+
+        r, c = loc
+        directions = [(-2, -1), (-2, 1), (-1, -2), (-1, 2),
+                      (1, -2), (1, 2), (2, -1), (2, 1)]
+        valid_moves = [(r + dr, c + dc) for dr, dc in directions
+                       if board.move_is_legal((r + dr, c + dc))]
+        random.shuffle(valid_moves)
+        return valid_moves
+
+    def neighbors(cell):
+        if cell == game.NOT_MOVED:
+            return spaces
+        return game.__get_moves(cell)
+
+    def speed_table(who):
+        table = dict()
+        speed = 0
+        initial = game.get_player_location(who)
+        current = [initial]
+        while True:
+            speed += 1
+            for position in current:
+                table[position] = speed
+            next = list()
+            for position in current:
+                for neighbor in neighbors(position):
+                    if neighbor not in table:
+                        next.append(neighbor)
+            current = next
+            break
+        return table
+
+    player_speed = speed_table(player)
+    opponent_speed = speed_table(game.get_opponent(player))
+
+    def value(space):
+        access_player = space in player_speed
+        access_opponent = space in opponent_speed
+
+        if access_player and access_opponent:
+            return math.atan(player_speed[space] - opponent_speed[space]) / (math.pi / 2)
+
+        return access_player - access_opponent
+
+    return sum(map(value, game.get_blank_spaces()))
 
 
 def custom_score_2(game, player):
