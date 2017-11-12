@@ -54,7 +54,7 @@ def custom_score(game, player):
     def neighbors(cell):
         if cell == game.NOT_MOVED:
             return spaces
-        return game.__get_moves(cell)
+        return get_moves(cell)
 
     def speed_table(who):
         table = dict()
@@ -262,6 +262,9 @@ class MinimaxPlayer(IsolationPlayer):
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
+
+        moves = game.get_legal_moves(game.active_player)
+        return random.choice(moves)
 
         # TODO: finish this function!
         raise NotImplementedError
