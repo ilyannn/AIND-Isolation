@@ -263,11 +263,52 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        moves = game.get_legal_moves(game.active_player)
-        return random.choice(moves)
+        return self.min_or_max_value(game, depth, True)[1]
 
-        # TODO: finish this function!
-        raise NotImplementedError
+    def min_or_max_value(self, game, depth, is_max):
+        """Finds best possible result for the active or non-active player.
+
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game state
+
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before aborting
+
+        is_max: bool
+            True for the active player (look for max), False for the other player
+            (look for min).
+
+        Returns
+        -------
+        (float, (int, int))
+            The best score and the board coordinates of the best move found in
+            the current search; (-1, -1) if there are no legal moves.
+        """
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
+        moves = game.get_legal_moves(game.active_player)
+#        print(moves)
+
+        if len(moves) == 0:
+            return (self.score(game, game.active_player), (-1, -1))
+
+        if depth == 0:
+            return (self.score(game, game.active_player), random.choice(moves))
+
+        def choose(move):
+            new_game = game.copy()
+            new_game.apply_move(move)
+#            print(move, new_game)
+            new_score = self.min_or_max_value(new_game, depth - 1, not is_max)[0]
+            return new_score, move
+
+        min_or_max = max if is_max else min
+        return min_or_max(map(choose, moves))
 
 
 class AlphaBetaPlayer(IsolationPlayer):
