@@ -34,6 +34,8 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+    return 10
+
     spaces = game.get_blank_spaces()
 
     def get_moves(board, loc):
@@ -210,13 +212,13 @@ class MinimaxPlayer(IsolationPlayer):
         # in case the search fails due to timeout
         best_move = (-1, -1)
 
-        try:
-            # The try/except block will automatically catch the exception
-            # raised when the timer is about to expire.
-            return self.minimax(game, self.search_depth)
-
-        except SearchTimeout:
-            pass  # Handle any actions required after timeout as needed
+        for depth in range(1, self.search_depth):
+            try:
+                # The try/except block will automatically catch the exception
+                # raised when the timer is about to expire.
+                best_move = self.minimax(game, depth)
+            except SearchTimeout:
+                pass  # Handle any actions required after timeout as needed
 
         # Return the best move from the last completed search iteration
         return best_move
@@ -263,7 +265,12 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        return self.min_or_max_value(game, depth, True)[1]
+        self.minimax_visited = 0
+        best = self.min_or_max_value(game, depth, True)[1]
+#        print("Visited", self.minimax_visited, "positions")
+        return best
+
+    minimax_visited = 0
 
     def min_or_max_value(self, game, depth, is_max):
         """Finds best possible result for the active or non-active player.
@@ -291,14 +298,15 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        moves = game.get_legal_moves(game.active_player)
-#        print(moves)
+        moves = game.get_legal_moves()
 
-        if len(moves) == 0:
-            return (self.score(game, game.active_player), (-1, -1))
+        self.minimax_visited += 1
+
+        if moves == []:
+            return game.utility(game.active_player), (-1, -1)
 
         if depth == 0:
-            return (self.score(game, game.active_player), random.choice(moves))
+            return self.score(game, game.active_player), random.choice(moves)
 
         def choose(move):
             new_game = game.copy()
@@ -308,8 +316,9 @@ class MinimaxPlayer(IsolationPlayer):
             return new_score, move
 
         min_or_max = max if is_max else min
-        return min_or_max(map(choose, moves))
-
+        result = min_or_max(map(choose, moves))
+        print(moves, result)
+        return result
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
