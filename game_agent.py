@@ -54,7 +54,7 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    return free_moves_score(game, player, 1)
+    return free_moves_score(game, player, 2)
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -78,7 +78,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 2)
+    return free_moves_score(game, player, 3)
 
 
 def custom_score_3(game, player):
@@ -103,7 +103,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 3)
+    return free_moves_score(game, player, 4)
 
 
 class IsolationPlayer:
