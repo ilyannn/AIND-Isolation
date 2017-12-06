@@ -34,8 +34,11 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    choices = game.get_legal_moves()
+    if not choices:
+        return game.utility(player)
+    sign = 1 if game.active_player == player else -1
+    return sign * float(len(choices))
 
 
 def custom_score_2(game, player):
@@ -112,6 +115,7 @@ class IsolationPlayer:
         positive value large enough to allow the function to return before the
         timer expires.
     """
+
     def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
         self.search_depth = search_depth
         self.score = score_fn
@@ -222,7 +226,11 @@ class MinimaxPlayer(IsolationPlayer):
                 raise SearchTimeout()
 
             choices = board.get_legal_moves(board.active_player)
-            if 0 == mdepth or not choices:
+
+            if not choices:
+                return board.utility(game.active_player), (-1, -1)
+
+            if 0 == mdepth:
                 return self.score(board, game.active_player), (-1, -1)
 
             def applied(choice):
@@ -278,8 +286,25 @@ class AlphaBetaPlayer(IsolationPlayer):
         """
         self.time_left = time_left
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        # Initialize the best move so that this function returns something
+        # in case the search fails due to timeout
+        best_move = (-1, -1)
+
+        if game.get_legal_moves():
+
+            depth = 1
+            try:
+                while True:
+                    # The try/except block will automatically catch the exception
+                    # raised when the timer is about to expire.
+                    best_move = self.alphabeta(game, depth)
+                    depth += 1
+
+            except SearchTimeout:
+                pass
+
+        # Return the best move from the last completed search iteration
+        return best_move
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
         """Implement depth-limited minimax search with alpha-beta pruning as
@@ -326,8 +351,56 @@ class AlphaBetaPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
+
+        def min_or_max_alphabeta(board, alpha, beta, mdepth):
+            """Find the min/max value and the choice leading to that value.
+
+            :param board:  position to look into
+            :param mdepth: maximum search depth (0 returns immediately)
+            :param alpha:  limits the lower bound of search on minimizing layers
+            :param beta:   limits the upper bound of search on maximizing layers
+            :return:       pair (resulting value, choice)
+            """
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            choices = board.get_legal_moves()
+
+            if not choices:
+                return board.utility(game.active_player), (-1, -1)
+
+            if mdepth <= 0:
+                return self.score(board, game.active_player), choices[0]
+
+            is_max = game.active_player == board.active_player # are we maximising?
+            best_score = None   # will be filled because choices is non-empty
+            best_choice = None  # both best_score and best_choice must be declared outside of the loop
+            alpha_ = alpha
+            beta_ = beta
+
+            for choice in choices:
+                choice_score, _ = min_or_max_alphabeta(board.forecast_move(choice), alpha_, beta_, mdepth - 1)
+
+                if best_score is None or (
+                        is_max and choice_score > best_score) or (
+                        not is_max and choice_score < best_score):
+                    best_score = choice_score
+                    best_choice = choice
+
+                if is_max:
+                    if best_score >= beta_:
+                        break
+                    if best_score > alpha_:
+                        alpha_ = best_score
+                else:
+                    if best_score <= alpha_:
+                        break
+                    if best_score < beta_:
+                        beta_ = best_score
+
+            return best_score, best_choice
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        return min_or_max_alphabeta(game, alpha, beta, depth)[1]

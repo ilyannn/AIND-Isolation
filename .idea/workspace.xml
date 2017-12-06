@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98cccdcf-a7f5-4e7c-87ca-003b95d8ddb5" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/in.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/game_agent.py" afterPath="$PROJECT_DIR$/game_agent.py" />
+      <change beforePath="$PROJECT_DIR$/sample_players.py" afterPath="$PROJECT_DIR$/sample_players.py" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +19,8 @@
       <file leaf-file-name="game_agent.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="233" column="42" lean-forward="true" selection-start-line="233" selection-start-column="42" selection-end-line="233" selection-end-column="42" />
+            <state relative-caret-position="365">
+              <caret line="376" column="49" lean-forward="false" selection-start-line="376" selection-start-column="49" selection-end-line="376" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -39,7 +39,7 @@
       <file leaf-file-name="isolation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/isolation/isolation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1148">
+            <state relative-caret-position="-1846">
               <caret line="83" column="14" lean-forward="true" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
               <folding />
             </state>
@@ -71,8 +71,8 @@
       <file leaf-file-name="sample_players.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sample_players.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2434">
-              <caret line="236" column="36" lean-forward="false" selection-start-line="236" selection-start-column="36" selection-end-line="236" selection-end-column="36" />
+            <state relative-caret-position="350">
+              <caret line="259" column="29" lean-forward="false" selection-start-line="259" selection-start-column="29" selection-end-line="259" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -391,10 +391,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample_players.py">
+    <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2434">
-          <caret line="236" column="36" lean-forward="false" selection-start-line="236" selection-start-column="36" selection-end-line="236" selection-end-column="36" />
+        <state relative-caret-position="272">
+          <caret line="3729" column="6" lean-forward="false" selection-start-line="3729" selection-start-column="6" selection-end-line="3729" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/isolation/isolation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1846">
+          <caret line="83" column="14" lean-forward="true" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/competition_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -409,34 +425,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/competition_agent.py">
+    <entry file="file://$PROJECT_DIR$/sample_players.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="3729" column="6" lean-forward="false" selection-start-line="3729" selection-start-column="6" selection-end-line="3729" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/isolation/isolation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1148">
-          <caret line="83" column="14" lean-forward="true" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+        <state relative-caret-position="350">
+          <caret line="259" column="29" lean-forward="false" selection-start-line="259" selection-start-column="29" selection-end-line="259" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="233" column="42" lean-forward="true" selection-start-line="233" selection-start-column="42" selection-end-line="233" selection-end-column="42" />
+        <state relative-caret-position="365">
+          <caret line="376" column="49" lean-forward="false" selection-start-line="376" selection-start-column="49" selection-end-line="376" selection-end-column="49" />
           <folding />
         </state>
       </provider>
