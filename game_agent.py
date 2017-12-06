@@ -209,12 +209,28 @@ class MinimaxPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
+
+        def min_or_max_value(board, depth, is_max):
+
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            choices = board.get_legal_moves(board.active_player)
+            if depth == 0 or not choices:
+                return self.score(board, game.active_player), (-1, -1)
+
+            def applied(choice):
+                new = board.forecast_move(choice)
+                computed = min_or_max_value(new, depth-1, not is_max)
+                return computed[0], choice
+
+            values = map(applied, choices)
+            return max(values) if is_max else min(values)
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        moves = game.get_legal_moves(game.active_player)
-        return random.choice(moves)
-
+        return min_or_max_value(game, depth, True)[1]
 
 
 class AlphaBetaPlayer(IsolationPlayer):
