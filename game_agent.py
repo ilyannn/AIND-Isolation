@@ -210,22 +210,29 @@ class MinimaxPlayer(IsolationPlayer):
                 testing.
         """
 
-        def min_or_max_value(board, depth, is_max):
+        def min_or_max_value(board, mdepth, is_max):
+            """Find the min/max value and the choice leading to that value.
 
+            :param board: position to look into
+            :param mdepth: maximum search depth (0 returns immediately)
+            :param is_max: True if we want the answer maximizing value
+            :return: pair (resulting value, choice)
+            """
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
             choices = board.get_legal_moves(board.active_player)
-            if depth == 0 or not choices:
+            if 0 == mdepth or not choices:
                 return self.score(board, game.active_player), (-1, -1)
 
             def applied(choice):
-                new = board.forecast_move(choice)
-                computed = min_or_max_value(new, depth-1, not is_max)
+                """Apply the move to the board and return result.
+                """
+                computed = min_or_max_value(board.forecast_move(choice), mdepth - 1, not is_max)
                 return computed[0], choice
 
             values = map(applied, choices)
-            return max(values) if is_max else min(values)
+            return (max if is_max else min)(values)
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
