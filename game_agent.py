@@ -10,6 +10,25 @@ class SearchTimeout(Exception):
     pass
 
 
+def free_moves_score(game, player, depth):
+
+    choices = game.get_legal_moves()
+
+    if not choices:
+        return game.utility(player)
+
+    sign = 1 if game.active_player == player else -1
+    player_free_score = sign * float(len(choices))
+
+    if depth <= 1:
+        return player_free_score
+
+    follow_choices = random.sample(choices, min(3, len(choices)))
+    opponent_scores = map(lambda choice: free_moves_score(game.forecast_move(choice), player, depth-1), follow_choices)
+
+    return player_free_score + sum(opponent_scores) / len(follow_choices)
+
+
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -34,12 +53,8 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    choices = game.get_legal_moves()
-    if not choices:
-        return game.utility(player)
-    sign = 1 if game.active_player == player else -1
-    return sign * float(len(choices))
 
+    return free_moves_score(game, player, 1)
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -63,8 +78,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    return free_moves_score(game, player, 2)
 
 
 def custom_score_3(game, player):
@@ -89,8 +103,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    return free_moves_score(game, player, 3)
 
 
 class IsolationPlayer:
