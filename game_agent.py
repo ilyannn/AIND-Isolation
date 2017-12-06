@@ -352,14 +352,14 @@ class AlphaBetaPlayer(IsolationPlayer):
                 testing.
         """
 
-        def min_or_max_alphabeta(board, alpha, beta, mdepth):
+        def min_or_max_alphabeta(board, current_alpha, current_beta, mdepth):
             """Find the min/max value and the choice leading to that value.
 
-            :param board:  position to look into
-            :param mdepth: maximum search depth (0 returns immediately)
-            :param alpha:  limits the lower bound of search on minimizing layers
-            :param beta:   limits the upper bound of search on maximizing layers
-            :return:       pair (resulting value, choice)
+            :param board:          position to look into
+            :param current_alpha:  limits the lower bound of search on minimizing layers
+            :param current_beta:   limits the upper bound of search on maximizing layers
+            :param mdepth:         maximum search depth (0 returns immediately)
+            :return:               pair (resulting value, choice)
             """
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
@@ -374,29 +374,26 @@ class AlphaBetaPlayer(IsolationPlayer):
 
             is_max = game.active_player == board.active_player # are we maximising?
             best_score = None   # will be filled because choices is non-empty
-            best_choice = None  # both best_score and best_choice must be declared outside of the loop
-            alpha_ = alpha
-            beta_ = beta
+            best_choice = None
 
             for choice in choices:
-                choice_score, _ = min_or_max_alphabeta(board.forecast_move(choice), alpha_, beta_, mdepth - 1)
 
-                if best_score is None or (
-                        is_max and choice_score > best_score) or (
-                        not is_max and choice_score < best_score):
+                choice_score, _ = min_or_max_alphabeta(board.forecast_move(choice), current_alpha, current_beta, mdepth - 1)
+
+                if (best_score is None
+                        or (is_max and choice_score > best_score)
+                        or (not is_max and choice_score < best_score)):
                     best_score = choice_score
                     best_choice = choice
 
-                if is_max:
-                    if best_score >= beta_:
-                        break
-                    if best_score > alpha_:
-                        alpha_ = best_score
-                else:
-                    if best_score <= alpha_:
-                        break
-                    if best_score < beta_:
-                        beta_ = best_score
+                if is_max and best_score >= current_beta or not is_max and best_score <= current_alpha:
+                    break
+
+                if is_max and best_score > current_alpha:
+                    current_alpha = best_score
+
+                if not is_max and best_score < current_beta:
+                    current_beta = best_score
 
             return best_score, best_choice
 
