@@ -3,6 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
+import math
 
 
 class SearchTimeout(Exception):
@@ -56,6 +57,55 @@ def custom_score(game, player):
 
     return free_moves_score(game, player, 2)
 
+
+def cell_distance(game, player):
+    """Find distance from the player for all empty cells on the board.
+
+    :param game:   board to examine
+    :param player: player from whose position we classify
+    :return:       a dictionary of pairs (cell, distance)
+    """
+    step = 0
+    visited = set()
+    distance = dict()
+
+    new_visited = set()
+    new_visited.add(game.get_player_location(player))
+
+    while new_visited:
+
+        for loc in new_visited:
+            distance[loc] = step
+
+        visited.update(new_visited)
+        step += 1
+
+        for loc in new_visited.copy():
+            new_visited.update(game.valid_moves(loc))
+
+        new_visited.difference_update(visited)
+
+    return distance
+
+
+def use(x, y):
+    """A plain math sigmoid function.
+
+    Parameters
+    ----------
+    x : float
+        An input value
+
+    Returns
+    -------
+    float
+        The sigmoid function value, from -1 to +1.
+
+    """
+
+    return math.atan(x-y)
+
+
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -78,7 +128,29 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 3)
+    choices = game.get_legal_moves()
+
+    if not choices:
+        return game.utility(player)
+
+    for_player = cell_distance(game, player)
+    for_opponent = cell_distance(game, game.get_opponent(player))
+
+    def usefulness(cell):
+        p = for_player.get(cell, None)
+        o = for_opponent.get(cell, None)
+
+        if p is None and o is None:
+            return 0
+        if o is None:
+            return 1
+        if p is None:
+            return -1
+
+        return use(o, p)
+
+    cells = game.get_blank_spaces()
+    return sum(usefulness(cell) for cell in cells)
 
 
 def custom_score_3(game, player):
@@ -414,3 +486,6 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         return min_or_max_alphabeta(game, alpha, beta, depth)[1]
+
+    def __str__(self):
+        return "AlphaBetaPlayer (" + str(self.score.__name__) + ")"

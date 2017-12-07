@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98cccdcf-a7f5-4e7c-87ca-003b95d8ddb5" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/game_agent.py" afterPath="$PROJECT_DIR$/game_agent.py" />
+      <change beforePath="$PROJECT_DIR$/isolation/isolation.py" afterPath="$PROJECT_DIR$/isolation/isolation.py" />
+      <change beforePath="$PROJECT_DIR$/sample_players.py" afterPath="$PROJECT_DIR$/sample_players.py" />
+      <change beforePath="$PROJECT_DIR$/tournament.py" afterPath="$PROJECT_DIR$/tournament.py" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,11 +18,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="game_agent.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game_agent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="800">
-              <caret line="105" column="43" lean-forward="false" selection-start-line="105" selection-start-column="43" selection-end-line="105" selection-end-column="43" />
+            <state relative-caret-position="540">
+              <caret line="36" column="75" lean-forward="true" selection-start-line="36" selection-start-column="75" selection-end-line="36" selection-end-column="75" />
+              <folding>
+                <element signature="e#199#212#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="math.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/math.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="89" column="4" lean-forward="false" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -37,8 +53,8 @@
       <file leaf-file-name="builtins.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/builtins.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="3729" column="6" lean-forward="false" selection-start-line="3729" selection-start-column="6" selection-end-line="3729" selection-end-column="6" />
+            <state relative-caret-position="346">
+              <caret line="4302" column="0" lean-forward="true" selection-start-line="4302" selection-start-column="0" selection-end-line="4302" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -47,8 +63,8 @@
       <file leaf-file-name="isolation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/isolation/isolation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1846">
-              <caret line="83" column="14" lean-forward="false" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+            <state relative-caret-position="203">
+              <caret line="282" column="31" lean-forward="true" selection-start-line="282" selection-start-column="31" selection-end-line="282" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -57,21 +73,19 @@
       <file leaf-file-name="competition_agent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/competition_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="-480">
               <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="agent_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/agent_test.py">
+      <file leaf-file-name="tournament.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tournament.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="26" lean-forward="true" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-              <folding>
-                <element signature="e#207#222#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="240">
+              <caret line="26" column="14" lean-forward="false" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -79,24 +93,9 @@
       <file leaf-file-name="sample_players.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sample_players.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2002">
-              <caret line="157" column="11" lean-forward="true" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
+            <state relative-caret-position="691">
+              <caret line="104" column="40" lean-forward="true" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="810">
-                <caret line="54" column="39" lean-forward="false" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
-                <folding />
-              </first_editor>
-              <second_editor>
-                <js_state />
-              </second_editor>
             </state>
           </provider>
         </entry>
@@ -120,8 +119,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sample_players.py" />
+        <option value="$PROJECT_DIR$/isolation/isolation.py" />
         <option value="$PROJECT_DIR$/game_agent.py" />
+        <option value="$PROJECT_DIR$/sample_players.py" />
+        <option value="$PROJECT_DIR$/tournament.py" />
       </list>
     </option>
   </component>
@@ -338,7 +339,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#199#212#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -386,6 +389,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///anaconda3/envs/aind/lib/python3.6/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3682">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="4302" column="0" lean-forward="true" selection-start-line="4302" selection-start-column="0" selection-end-line="4302" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/math.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="89" column="4" lean-forward="false" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/agent_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="e#207#222#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="SPLIT">
@@ -399,60 +436,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/IdeaIC2017.3/python_stubs/1635380473/builtins.py">
+    <entry file="file://$PROJECT_DIR$/sample_players.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="3729" column="6" lean-forward="false" selection-start-line="3729" selection-start-column="6" selection-end-line="3729" selection-end-column="6" />
+        <state relative-caret-position="691">
+          <caret line="104" column="40" lean-forward="true" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/isolation/isolation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1846">
-          <caret line="83" column="14" lean-forward="false" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///anaconda3/envs/aind/lib/python3.6/random.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3682">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="203">
+          <caret line="282" column="31" lean-forward="true" selection-start-line="282" selection-start-column="31" selection-end-line="282" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/competition_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
+        <state relative-caret-position="-480">
           <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agent_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="26" lean-forward="true" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-          <folding>
-            <element signature="e#207#222#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sample_players.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2002">
-          <caret line="157" column="11" lean-forward="true" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="800">
-          <caret line="105" column="43" lean-forward="false" selection-start-line="105" selection-start-column="43" selection-end-line="105" selection-end-column="43" />
+        <state relative-caret-position="540">
+          <caret line="36" column="75" lean-forward="true" selection-start-line="36" selection-start-column="75" selection-end-line="36" selection-end-column="75" />
+          <folding>
+            <element signature="e#199#212#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tournament.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="26" column="14" lean-forward="false" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
           <folding />
         </state>
       </provider>
