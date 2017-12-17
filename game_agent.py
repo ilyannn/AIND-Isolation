@@ -1,7 +1,3 @@
-"""Finish all TODO items in this file to complete the isolation project, then
-test your agent's strength against a set of known agents using tournament.py
-and include the results in your report.
-"""
 import random
 import math
 
@@ -57,6 +53,20 @@ def custom_score(game, player):
 
     return free_moves_score(game, player, 2)
 
+def valid_moves(board, loc):
+    """Generate the list of possible moves for an L-shaped motion (like a
+    knight in chess).
+    """
+    if loc == None:
+        return board.get_blank_spaces()
+
+    r, c = loc
+    directions = [(-2, -1), (-2, 1), (-1, -2), (-1, 2),
+              (1, -2), (1, 2), (2, -1), (2, 1)]
+    valid_moves = [(r + dr, c + dc) for dr, dc in directions
+               if board.move_is_legal((r + dr, c + dc))]
+    random.shuffle(valid_moves)
+    return valid_moves
 
 def cell_distance(game, player):
     """Find distance from the player for all empty cells on the board.
@@ -81,7 +91,7 @@ def cell_distance(game, player):
         step += 1
 
         for loc in new_visited.copy():
-            new_visited.update(game.valid_moves(loc))
+            new_visited.update(valid_moves(game, loc))
 
         new_visited.difference_update(visited)
 
