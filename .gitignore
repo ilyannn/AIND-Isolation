@@ -1,9 +1,10 @@
 [a-z]*-[0-9]*.zip
 [a-z]*-result-[0-9]*.json
 research_review.pdf
-research_review.synctex.gz
-research_review.aux
-research_review.log
+heuristic_analysis.pdf
+*.synctex.gz
+*.aux
+*.log
 research_review.bbl
 research_review.blg
 
