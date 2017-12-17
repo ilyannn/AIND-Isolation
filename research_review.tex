@@ -9,21 +9,64 @@
 %SetFonts
 
 
-\title{Research Review}
+\title{Research Paper Review}
 \author{Ilya Nikokoshev}
-\date{December 08, 2017}	
+\date{December 17, 2017}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-As part of the project, we review one of the papers in AI.
+As part of the Project 2 in the Artificial Intelligence Nanodegree Program, we review an AlphaGo paper \cite{Silver_2016} by the DeepMind team.
 \end{abstract}
 
-\section{Review of \cite{Silver_2016}}
+
+\section{Overview}
+
+The article describes the Monte Carlo tree search algorithm used in previously existing programs to select the move in the game. The effectiveness of this algorithm depends on heuristics for position evaluation and best move prediction.
+
+Authors implement those functions using convolutional neural networks. Crucially, those networks can be first trained using the expert knowledge, such as existing databases of human moves and hand-crafted evaluation functions, but then fine-tuned without human intervention.
 
 
-\bibliographystyle{plain}
-\bibliography{go}
+\section{Training pipeline}
+
+The {\it policy network} that assigns best move probabilities to moves in a position $p_\sigma$ is implemented with 13 convolutional layers and trained on the expert moves.
+
+The weights $\sigma$ are then refined by self-play with the stochastic gradient ascent in the direction of weights that win more games. Using only $p_\rho$, the algorithm is already strong enough to win over strongest open-source Go programs. 
+
+For the tree search part of the algorithm, a separate policy network $p_\pi$, that is only considering small pattern features, is implemented. It is significantly simpler and about 1000 times faster, making its use more practical for rollouts. The value prediction function is implemented with a {\it value network} $\nu^{p_\rho}$ similar to $p_\rho$.
+
+
+\section{Monte Carlo tree search}
+
+For a given position, the search tree is built. A policy network is used to compute prior probabilities of selecting the moves. The leafs of the current search tree are then expanded in a simulation according to this probability (plus an exploration bonus). On a leaf, the value is computed using a mix of:
+\begin{enumerate}
+\item value predicted by a value network,
+\item result of a rollout using $p_\pi$.
+\end{enumerate}
+
+
+The authors have experimentally established that
+\begin{itemize}
+\item $p_\sigma$ works better than a $p_\rho$ as a policy network for a prior probability.
+\item $\nu^{p_\rho}$ works better than $\nu^{p_\sigma}$ as a value network.
+\item Averaging the value heuristics is a better strategy than using only one of them. 
+\end{itemize}
+
+
+\section{Competition results}
+
+The final single-machine version of AlphaGo (using 48 CPUs and 8 GPUs) won 494 out of 495 games against other Go programs. 
+
+The distributed version of AlphaGo (using 1,202 CPUs and 176 GPUs) won 5 to 0 in a formal match against a professional 2 dan player, placing it on the level of the strongest human players.
+
+\section{Further development}
+
+The work of the authors is continued in \cite{silver2017mastering}, where the technical improvements allow the AlphaGo Zero program to skip the step of using the human expert knowledge, and proceed to gain mastery in the game by tabula rasa reinforcement learning. 
+
+This work is further generalized to other knowledge domains in \cite{2017arXivSilver}.
+
+\bibliographystyle{alpha}
+\bibliography{go,silver2017mastering}
 
 \end{document}  
