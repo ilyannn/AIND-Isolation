@@ -26,33 +26,6 @@ def free_moves_score(game, player, depth):
     return player_free_score + sum(opponent_scores) / len(follow_choices)
 
 
-def custom_score(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
-    This should be the best heuristic function for your project submission.
-
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : object
-        A player instance in the current game (i.e., an object corresponding to
-        one of the player objects `game.__player_1__` or `game.__player_2__`.)
-
-    Returns
-    -------
-    float
-        The heuristic value of the current game state to the specified player.
-    """
-
-    return free_moves_score(game, player, 2)
-
 def valid_moves(board, loc):
     """Generate the list of possible moves for an L-shaped motion (like a
     knight in chess).
@@ -67,6 +40,7 @@ def valid_moves(board, loc):
                if board.move_is_legal((r + dr, c + dc))]
     random.shuffle(valid_moves)
     return valid_moves
+
 
 def cell_distance(game, player):
     """Find distance from the player for all empty cells on the board.
@@ -116,7 +90,7 @@ def use(x, y):
     return math.atan(x-y)
 
 
-def custom_score_2(game, player):
+def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 
@@ -161,6 +135,34 @@ def custom_score_2(game, player):
 
     cells = game.get_blank_spaces()
     return sum(usefulness(cell) for cell in cells)
+
+
+def custom_score_2(game, player):
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    This should be the best heuristic function for your project submission.
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+
+    return free_moves_score(game, player, 2)
 
 
 def custom_score_3(game, player):
