@@ -1,7 +1,5 @@
 [a-z]*-[0-9]*.zip
 [a-z]*-result-[0-9]*.json
-research_review.pdf
-heuristic_analysis.pdf
 *.synctex.gz
 *.aux
 *.log
