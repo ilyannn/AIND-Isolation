@@ -7,7 +7,7 @@ class SearchTimeout(Exception):
     pass
 
 
-def free_moves_score(game, player, depth):
+def free_moves_score(game, player, depth, unroll_moves=3, discount_opponent=1):
 
     choices = game.get_legal_moves()
 
@@ -20,10 +20,10 @@ def free_moves_score(game, player, depth):
     if depth <= 1:
         return player_free_score
 
-    follow_choices = random.sample(choices, min(3, len(choices)))
-    opponent_scores = map(lambda choice: free_moves_score(game.forecast_move(choice), player, depth-1), follow_choices)
+    follow_choices = random.sample(choices, min(unroll_moves, len(choices)))
+    opponent_scores = map(lambda choice: free_moves_score(game.forecast_move(choice), player, depth-1, 1), follow_choices)
 
-    return player_free_score + sum(opponent_scores) / len(follow_choices)
+    return player_free_score + discount_opponent * sum(opponent_scores) / len(follow_choices)
 
 
 def valid_moves(board, loc):
@@ -162,7 +162,7 @@ def custom_score_2(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    return free_moves_score(game, player, 2)
+    return free_moves_score(game, player, 2, 3, 1)
 
 
 def custom_score_3(game, player):
@@ -187,7 +187,20 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 4)
+    return free_moves_score(game, player, 2, 3, 0.8)
+
+
+def custom_score_4(game, player):
+    return free_moves_score(game, player, 2, 3, 1.2)
+
+
+def custom_score_5(game, player):
+    return free_moves_score(game, player, 2, 3, 1.4)
+
+
+def custom_score_6(game, player):
+    return free_moves_score(game, player, 2, 10, 1)
+
 
 
 class IsolationPlayer:
