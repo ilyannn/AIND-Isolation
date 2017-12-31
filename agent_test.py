@@ -15,10 +15,15 @@ class IsolationTest(unittest.TestCase):
     """Unit tests for isolation agents"""
 
     def setUp(self):
-        reload(game_agent)
-        self.player1 = "Player1"
-        self.player2 = "Player2"
-        self.game = isolation.Board(self.player1, self.player2)
+        pass
+
+    def test_math(self):
+        self.assertAlmostEqual(game_agent.usefulness_sigmoid(100, 0), 1, places=2)
+        self.assertAlmostEqual(game_agent.usefulness_sigmoid(0, 100), -1, places=2)
+        self.assertAlmostEqual(game_agent.usefulness_atan(100, 0), 1, places=2)
+        self.assertAlmostEqual(game_agent.usefulness_atan(0, 100), -1, places=2)
+        self.assertEqual(game_agent.usefulness_sigmoid(100, 100), 0)
+        self.assertEqual(game_agent.usefulness_sigmoid(100, 100), 0)
 
 
 if __name__ == '__main__':

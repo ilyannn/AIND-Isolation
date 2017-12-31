@@ -72,8 +72,27 @@ def cell_distance(game, player):
     return distance
 
 
-def use(x, y):
-    """A plain math sigmoid function.
+def usefulness_atan(x, y):
+    """A plain math arctan function.
+
+    Parameters
+    ----------
+    x : float
+        An input value
+
+    Returns
+    -------
+    float
+        The arctan function value, from -1 to +1.
+
+    """
+
+    pi2 = math.pi / 2
+    return math.atan((x-y) * pi2) / pi2
+
+
+def usefulness_sigmoid(x, y):
+    """A plain math sigmoid function, shifted.
 
     Parameters
     ----------
@@ -87,12 +106,53 @@ def use(x, y):
 
     """
 
-    return math.atan(x-y)
+    ex = math.exp(x-y)
+    return (ex-1/ex)/(ex+1/ex)
 
+
+def distance_score(game, player, alpha, z, f):
+    choices = game.get_legal_moves()
+
+    if not choices:
+        return game.utility(player)
+
+    for_player = cell_distance(game, player)
+    for_opponent = cell_distance(game, game.get_opponent(player))
+
+    def usefulness(cell):
+        p = for_player.get(cell, None)
+        o = for_opponent.get(cell, None)
+
+        if p is None and o is None:
+            return 0
+        if o is None:
+            return 1
+        if p is None:
+            return -1
+
+        return f(o, p)
+
+    cells = game.get_blank_spaces()
+    return z + alpha * sum(usefulness(cell) for cell in cells)
+
+
+def custom_score_distance1(game, player):
+    return distance_score(game, player, 1, 0, usefulness_atan)
+
+def custom_score_distance2(game, player):
+    return distance_score(game, player, 1, -0.5, usefulness_atan)
+
+def custom_score_distance3(game, player):
+    return distance_score(game, player, 2, -0.5, usefulness_atan)
+
+def custom_score_distance4(game, player):
+    return distance_score(game, player, 2, -0.5, usefulness_sigmoid)
 
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
+
+    This should be the best heuristic function for your project submission.
 
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
@@ -131,13 +191,13 @@ def custom_score(game, player):
         if p is None:
             return -1
 
-        return use(o, p)
+        return math.atan(o, p)
 
     cells = game.get_blank_spaces()
     return sum(usefulness(cell) for cell in cells)
 
-
 def custom_score_2(game, player):
+
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 

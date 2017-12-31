@@ -20,8 +20,7 @@ from collections import namedtuple
 from isolation import Board
 from sample_players import (RandomPlayer, open_move_score,
                             improved_score, center_score)
-from game_agent import (MinimaxPlayer, AlphaBetaPlayer, custom_score,
-                        custom_score_2, custom_score_3, custom_score_4, custom_score_5, custom_score_6)
+from game_agent import *
 
 NUM_MATCHES = 100  # number of matches against each opponent
 TIME_LIMIT = 100  # number of milliseconds before timeout
@@ -156,5 +155,33 @@ def main():
     play_matches(cpu_agents, test_agents, NUM_MATCHES)
 
 
+def main_distance():
+    # Define two agents to compare -- these agents will play from the same
+    # starting position against the same adversaries in the tournament
+
+    NUM_MATCHES = 50
+
+    test_agents = [
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance1), "AB_Distance_1"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance2), "AB_Distance_2"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance3), "AB_Distance_3"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance4), "AB_Distance_4"),
+    ]
+
+    # Define a collection of agents to compete against the test agents
+    cpu_agents = [
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance1), "AB_Distance_1"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance2), "AB_Distance_2"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance3), "AB_Distance_3"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_distance4), "AB_Distance_4"),
+        Agent(AlphaBetaPlayer(score_fn=improved_score), "AB_Improved")
+    ]
+
+    print(DESCRIPTION)
+    print("{:^74}".format("*************************"))
+    print("{:^74}".format("Playing Matches"))
+    print("{:^74}".format("*************************"))
+    play_matches(cpu_agents, test_agents, NUM_MATCHES)
+
 if __name__ == "__main__":
-    main()
+    main_distance()

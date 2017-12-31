@@ -9,9 +9,9 @@
 %SetFonts
 
 
-\title{Heuristic Review}
+\title{Heuristic Analysis}
 \author{Ilya Nikokoshev}
-\date{December 17, 2017}
+\date{January 1, 2018}
 
 \begin{document}
 \maketitle
@@ -20,14 +20,84 @@
 As part of the Project 2 in the Artificial Intelligence Nanodegree Program, we implement three heuristics for score computation.
 \end{abstract}
 
+\tableofcontents
 
-\section*{Heuristic 1}
+\section{Heuristic Descriptions}
+
+All of our heuristics attempt to express the goodness of a position as a value that would be larger whenever there seem to be more choices for the first player (denoted $A$) and fewer choices for the opponent (denoted $B$).
 
 
-\section*{Heuristic 2}
+\subsection{Distance Heuristic $D(z, \alpha, f)$}
+
+\subsubsection{Definition}
+
+For each blank space $s$ on the board, we find whether it is accessible from the current positions of players $A$ and $B$. If it is not accessible by either, this square does not contribute to the heuristic value. 
+
+Otherwise, let $d^A_s$ and $d^B_s$ denote the minimum number of steps required to move to this square from the positions of, respectively, player $A$ and $B$, or $+\infty$ if this square is inaccessible. We set the contribution of $s$ to the heuristic then as $\alpha f(d^B_s-d^A_s)$,
+where $f$ is a suitably chosen monotonic function with the property $P$ that $f(+\infty) = 1$ and $f(-\infty) = -1$. 
+
+The total value of the heuristic will be therefore computed as 
+
+$$D(z, \alpha, f) = z + \alpha\sum_{s\in A}f(d^B_s-d^A_s), $$
+
+where $A$ is the set of accessible spaces on the board, $d^P_s$ is defined above, and $z$ provides the initial value.
+
+\subsubsection{Theoretical analysis}
+
+We will select either (suitably rescaled) $\arctan$ or sigmoid function $(1+e^{-x})^{-1}$ as the function $f$.
+
+The condition $P$ ensures that if the board is divided into two disjoint parts, so that $A$ only has access to $n_A$ cells, and $B$ only has access to some other $n_B$ cells, the value of the heuristic is $z+\alpha(n_A-n_B)$. Naively, such a position is likely to be winning for $A$ if and only if $n_A > n_B$. If we want the value to be equal to the utility of $-1$ when $n_A=n_B=0$, and $1$ when $n_A=1, n_B=0$, we should select $\alpha = 2, z = -1/2$..
+
+\subsubsection{Validating the parameter choices}
+\label{distancechoices}
+
+For comparison, we provide results of the competition of matches between selected distance heuristics with different values of parameters and \texttt{improved\_score} heuristic in Table \ref{DistanceCompetition}. In the table, cells corresponds to the percentage of wins of an alphabeta search agent with a row heuristic against the column heuristic in 100 matches, and the average is computed against rows as well as columns (thus, it is an average win in 700 parties against other opponents).
+
+\begin{table}[htp]
+\caption{Distance heuristics competition}
+\begin{center}
+\begin{tabular}{c|ccc|ccccc|c}
+   & $z$ & $\alpha$ & $f$ & 1 & 2 & 3 & 4 & Improved & Average \\
+   \hline
+ Variant 1 &    0 & 1 & $\arctan$  & $52\%$ & $52\%$ & $51\%$ & $58\%$ & $57\%$ & $53.0\%$ \\
+ Variant 2 & -1/2 & 1 & $\arctan$  & $50\%$ & $52\%$ & $51\%$ & $47\%$ & $45\%$ & $49.3\%$ \\
+ Variant 3 & -1/2 & 2 & $\arctan$  & $48\%$ & $51\%$ & $55\%$ & $48\%$ & $51\%$ & $48.9\%$ \\
+ Variant 4 & -1/2 & 2 & sigmoid    & $49\%$ & $45\%$ & $54\%$ & $49\%$ & $49\%$ & $49.1\%$
+ 
+\end{tabular}
+\end{center}
+\label{DistanceCompetition}
+\end{table}%
+
+The table suggests that, contrary to the theoretical analysis above, the Variant 1 heuristic is the strongest, and 3 and 4 are the weakest.
+
+Unfortunately, the standard deviation for the case of tossing a perfect coin 700 times comprises about 2\%, which means that even for the average result column, these deviations of $1-3\%$ could be possible even for the opponents of perfectly equal strength. Therefore, the confidence in these results is not very high.
+
+In combination with the theoretical analysis above, we therefore make a choice to take both $D(0, 1, \arctan)$ and $D(-1/2, 2, \arctan)$ as the preferred distance heuristics.
 
 
-\section*{Heuristic 3}
+\subsection{Free Moves Heuristic $F(d, u, \beta)$}
+
+
+\section{Final Choices}
+
+
+We combine the results of \ref{distancechoices} to select three heuristic functions and present the  results of a competition between them and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition}.
+
+\begin{table}[htp]
+\caption{Final custom score heuristics}
+\begin{center}
+\begin{tabular}{clc|cccc}
+   & Function & Heuristic & 1 & 2 & 3 & Improved \\
+   \hline
+1 & \texttt{custom\_score}    & $D(0, 1, \arctan)$             & & & &  \\
+2 & \texttt{custom\_score\_2} & $D(-1/2, 2, \mathrm{sigmoid})$ & & & & \\
+3 & \texttt{custom\_score\_3} & $D(-1/2, 2, \mathrm{sigmoid})$ & & & &
+\end{tabular}
+\end{center}
+\label{FinalCompetition}
+\end{table}%
+
 
 
 \end{document}  
