@@ -159,22 +159,15 @@ def main_distance():
     # Define two agents to compare -- these agents will play from the same
     # starting position against the same adversaries in the tournament
 
-    NUM_MATCHES = 50
+    NUM_MATCHES = 250
 
     test_agents = [
         Agent(AlphaBetaPlayer(score_fn=custom_score_distance1), "AB_Distance_1"),
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance2), "AB_Distance_2"),
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance3), "AB_Distance_3"),
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance4), "AB_Distance_4"),
     ]
 
     # Define a collection of agents to compete against the test agents
     cpu_agents = [
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance1), "AB_Distance_1"),
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance2), "AB_Distance_2"),
-        Agent(AlphaBetaPlayer(score_fn=custom_score_distance3), "AB_Distance_3"),
         Agent(AlphaBetaPlayer(score_fn=custom_score_distance4), "AB_Distance_4"),
-        Agent(AlphaBetaPlayer(score_fn=improved_score), "AB_Improved")
     ]
 
     print(DESCRIPTION)

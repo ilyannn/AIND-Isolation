@@ -13,6 +13,7 @@ from copy import copy
 
 TIME_LIMIT_MILLIS = 150
 
+BOARD_SIZE = 13
 
 class Board(object):
     """Implement a model for the game Isolation assuming each player moves like
@@ -37,7 +38,7 @@ class Board(object):
     BLANK = 0
     NOT_MOVED = None
 
-    def __init__(self, player_1, player_2, width=7, height=7):
+    def __init__(self, player_1, player_2, width=BOARD_SIZE, height=BOARD_SIZE):
         self.width = width
         self.height = height
         self.move_count = 0
