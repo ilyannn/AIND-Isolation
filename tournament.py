@@ -23,7 +23,7 @@ from sample_players import (RandomPlayer, open_move_score,
 from game_agent import *
 
 NUM_MATCHES = 100  # number of matches against each opponent
-TIME_LIMIT = 100  # number of milliseconds before timeout
+TIME_LIMIT = 250  # number of milliseconds before timeout
 
 DESCRIPTION = """
 This script evaluates the performance of the custom_score evaluation
@@ -155,6 +155,31 @@ def main():
     play_matches(cpu_agents, test_agents, NUM_MATCHES)
 
 
+def main_freemoves():
+
+    # Define two agents to compare -- these agents will play from the same
+    # starting position against the same adversaries in the tournament
+    test_agents = [
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves4), "AB_Free_4"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves6), "AB_Free_6"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves7), "AB_Free_7"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves8), "AB_Free_8"),
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves9), "AB_Free_9"),
+    ]
+
+    # Define a collection of agents to compete against the test agents
+    cpu_agents = [
+        Agent(AlphaBetaPlayer(score_fn=custom_score_free_moves4), "AB_Free_4"),
+        Agent(AlphaBetaPlayer(score_fn=improved_score), "AB_Improved")
+    ]
+
+    print(DESCRIPTION)
+    print("{:^74}".format("*************************"))
+    print("{:^74}".format("Playing Matches"))
+    print("{:^74}".format("*************************"))
+    play_matches(cpu_agents, test_agents, 250)
+
+
 def main_distance():
     # Define two agents to compare -- these agents will play from the same
     # starting position against the same adversaries in the tournament
@@ -177,4 +202,4 @@ def main_distance():
     play_matches(cpu_agents, test_agents, NUM_MATCHES)
 
 if __name__ == "__main__":
-    main_distance()
+    main_freemoves()

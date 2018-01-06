@@ -11,7 +11,7 @@
 
 \title{Heuristic Analysis}
 \author{Ilya Nikokoshev}
-\date{January 1, 2018}
+\date{January 7, 2018}
 
 \begin{document}
 \maketitle
@@ -52,7 +52,7 @@ The condition $P$ ensures that if the board is divided into two disjoint parts, 
 \subsubsection{Validating the parameter choices}
 \label{distancechoices}
 
-For comparison, we provide results of the competition of matches between selected distance heuristics with different values of parameters and \texttt{improved\_score} heuristic in Table \ref{DistanceCompetition}. In the table, cells corresponds to the percentage of wins of an alphabeta search agent with a row heuristic against the column heuristic in 100 matches, and the average is computed from rows as well as columns (thus, it is an average win in 700 parties against other opponents).
+For comparison, we provide results of the competition\footnote{Raw data is available at \texttt{https://github.com/ilyannn/AIND-Isolation/tree/master/tournaments}} of matches between selected distance heuristics with different values of parameters and \texttt{improved\_score} heuristic in Table \ref{DistanceCompetition}. In the table, cells corresponds to the percentage of wins of an alphabeta search agent with a row heuristic against the column heuristic in 100 matches, and the average is computed from rows as well as columns (thus, it is an average win in 700 parties against other opponents).
 
 \begin{table}[htp]
 \caption{Distance heuristics competition}
@@ -90,26 +90,77 @@ In an attempt to further examine the question of parameters, we put Variant 1 ag
 \label{DistanceBoards}
 \end{table}%
 
-In combination with the theoretical analysis, we therefore make a choice to take both $D(0, 1, \arctan)$ and $D(-1/2, 2, \textrm{sigmoid})$ as the preferred distance heuristics.
+In combination with the theoretical analysis, we therefore make a choice to take $D(-1/2, 2, \textrm{sigmoid})$ as the preferred distance heuristic.
 
 
 \subsection{Free Moves Heuristic $F(d, u, \beta)$}
 
+\subsubsection{Definition}
+We will attempt to perform a random unroll of the board and compute the amount of free moves available at each step. Naturally, the moves available to the opponent $B$ should count as a negative for the player $A$. We will need to restrict us to certain maximal depth $d$, so $F(d, u, \beta)$ will be computed recursively starting from $F(0, u, \beta) = 0$.
+
+For a given board $\mathfrak b$ and $d>0$, the \textit{free moves score} will be therefore defined as
+
+$$ F_{\mathfrak b}(d, u, \beta) = n - {\beta \over \mathrm{min}(v, n)}  \sum_{{\mathfrak b}' \in S({\mathfrak b}, u)} F_{{\mathfrak b}'}(d-1, u, \beta),$$
+
+where $n$ is the number of available moves for the current player, $S({\mathfrak b}, u)$ is the set of no more than $u$ boards obtained by selecting a random subset of the possible moves, and $\beta$ is a positive number that is part of the definition of the score function. 
+
+\subsubsection{Selection of $\beta$}
+\label{FreeMoveBetaCompetitions}
+
+We will first consider the simplest case of looking forward a single step ahead and attempt to find a preferred value for parameter $\beta$ by comparing a few of the heuristics in 200 matches against alphabeta improved agent. According to the results in Table \ref{FreeMoveBetaCompetition}, values of $\beta$ around $1.2$ seem to be the most promising (variant numbers correspond to those given in \texttt{FreeMoveBetaCompetition.png}).
+
+\begin{table}[htp]
+\caption{Free move heuristics competition ($d=2$, $u=3$, variance of $\beta$)}
+\begin{center}
+\begin{tabular}{c|c|rcccc|c}
+    & $\beta$ & Wins against Improved \\
+   \hline
+ Variant 2  & 1 & $44.0\%$ \\
+ Variant 3  & 0.8 & $49.5\%$ \\
+ Variant 4  & 1.2 & $52.5\%$ \\
+ Variant 5  & 1.4 & $47.5\%$ \\ 
+\end{tabular}
+\end{center}
+\label{FreeMoveBetaCompetition}
+\end{table}%
+
+This corresponds to our intuition that making an aggressive move that takes away
+the choices from the opponent is slightly more important than keeping choices for yourself.
+
+\subsubsection{Selection of $d$ and $u$}
+\label{FreeMoveDUCompetitions}
+
+Unrolling the position tree deeper or considering more moves at each depth would be likely to give us a better heuristic value at the cost of time: the total number of positions analysed in a typical computation $T = 1+u+u^2+\dots+u^{d-1}$. Table \ref{FreeMoveDUCompetition} compares several agents that increase $d$ or $u$ in a competition of 200 matches each and the standard timeout of $250\textrm{ms}$.
+
+\begin{table}[htp]
+\caption{Free move heuristics competition ($\beta = 1.2$)}
+\begin{center}
+\begin{tabular}{c|cc|c|rccccc}
+   & $d$ & $u$ & $T$  & Wins against 4 & Improved \\
+   \hline
+ Variant 4 &    2 & 3   & 4   & & $\%$ \\
+ Variant 7 &    2 & 10  & 11 & & $\%$ \\
+ Variant 8 &    3 & 4   & 21  & & $\%$ \\
+ Variant 9 &    4 & 2   & 15  & & $\%$ \\
+\end{tabular}
+\end{center}
+\label{FreeMoveDUCompetition}
+\end{table}%
 
 \section{Final Choices}
 
 
-We combine the results of \ref{distancechoices} to select three heuristic functions and present the  results of a competition between them and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition}.
+We combine the results of \ref{distancechoices} and \ref{FreeMoveDUCompetitions} to select three heuristic functions and present the results of a competition between them and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition}.
 
 \begin{table}[htp]
 \caption{Final heuristics competition}
 \begin{center}
-\begin{tabular}{clc|cccc}
-   & Function & Heuristic & 1 & 2 & 3 & Improved \\
+\begin{tabular}{c|lc|cccccc}
+   & Function Name & Heuristic & 1 & 2 & 3 & Open & Center & Improved \\
    \hline
-1 & \texttt{custom\_score}    & $D(0, 1, \arctan)$             & & & &  \\
-2 & \texttt{custom\_score\_2} & $D(-1/2, 2, \textrm{sigmoid})$ & & & & \\
-3 & \texttt{custom\_score\_3} & ?? & & & &
+1 & \texttt{custom\_score}    & $D(-1/2, 2, \textrm{sigmoid})$ & & & & & &  \\
+2 & \texttt{custom\_score\_2} & $F(d, u, \beta)$               & & & & & &  \\
+3 & \texttt{custom\_score\_3} & $F(d, u, \beta)$               & & & & & &  
 \end{tabular}
 \end{center}
 \label{FinalCompetition}
