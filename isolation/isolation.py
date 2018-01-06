@@ -13,7 +13,7 @@ from copy import copy
 
 TIME_LIMIT_MILLIS = 150
 
-BOARD_SIZE = 13
+BOARD_SIZE = 7
 
 class Board(object):
     """Implement a model for the game Isolation assuming each player moves like
