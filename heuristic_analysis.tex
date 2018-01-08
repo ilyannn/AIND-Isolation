@@ -11,13 +11,13 @@
 
 \title{Heuristic Analysis}
 \author{Ilya Nikokoshev}
-\date{January 7, 2018}
+\date{January 9, 2018}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-As part of the Project 2 in the Artificial Intelligence Nanodegree Program, we implement three heuristics for score computation.
+As part of the Project 2 in the Artificial Intelligence Nanodegree Program, we implement three heuristics for score computation in the Isolation game.
 \end{abstract}
 
 \tableofcontents
@@ -31,23 +31,26 @@ All of our heuristics attempt to express the goodness of a position as a value t
 
 \subsubsection{Definition}
 
-For each blank space $s$ on the board, we find whether it is accessible from the current positions of players $A$ and $B$. If it is not accessible by either, this square does not contribute to the heuristic value. 
+For each blank space $s$ on the board, we find whether it is accessible from the current positions of players $A$ and $B$. If it is not accessible by either, this square does not contribute to the value of heuristic. 
 
-Otherwise, let $d^A_s$ and $d^B_s$ denote the minimum number of steps required to move to this square from the positions of, respectively, player $A$ and $B$, or $+\infty$ if this square is inaccessible. We set the contribution of $s$ to the heuristic then as $\alpha f(d^B_s-d^A_s)$,
+Otherwise, let $d^A_s$ and $d^B_s$ denote either the minimum number of steps required to move to this square from the positions of, respectively, player $A$ and $B$, or $+\infty$ if this square is inaccessible. We set the contribution of $s$ to the heuristic then as $\alpha f(d^B_s-d^A_s)$,
 where $f$ is a suitably chosen monotonic function with the property $P$ that $f(+\infty) = 1$ and $f(-\infty) = -1$. 
 
 The total value of the heuristic will be therefore computed as 
 
 $$D(z, \alpha, f) = z + \alpha\sum_{s\in A}f(d^B_s-d^A_s), $$
 
-where $A$ is the set of accessible spaces on the board, $d^P_s$ is defined above, and $z$ provides the initial value.
+where $A$ is the set of accessible spaces on the board, $d^P_s$ is defined above, and $z$ provides the initial value. 
 
 \subsubsection{Theoretical analysis}
 \label{DistanceAnalysis}
 
 We will select either $\arctan$ or sigmoid function $(1+e^{-x})^{-1}$ as the function $f$ (both of them, of course, suitably rescaled). 
 
-The condition $P$ ensures that if the board is divided into two disjoint parts, so that $A$ only has access to $n_A$ cells, and $B$ only has access to some other $n_B$ cells, the value of the heuristic $D = z+\alpha(n_A-n_B)$. Naively, such a position is likely to be winning for $A$ if and only if $n_A > n_B$. Moreover, for the cases when $n_A=n_B=0$ ($A$ loses immediately), and $n_A=1, n_B=0$ ($B$ loses after $A$'s move), the utility is known to be equal to $-1$ and $1$. If we want the value of $D$ to be equal to the utility in these two cases, we should select $\alpha = 2, z = -1/2$.
+The values of $\alpha$ und $z$ provide a simple linear rescaling of the heuristic and thus should not influence the final result (they would be relevant for the final result if one were to restrict the utility and heuristic values to an interval $[-1, +1]$).
+
+The condition $P$ ensures that if the board is divided into two disjoint parts, so that $A$ only has access to $n_A$ cells, and $B$ only has access to some other $n_B$ cells, the value of the heuristic $D = z+\alpha(n_A-n_B)$. Naively, such a position is likely to be winning for $A$ if and only if $n_A > n_B$. Moreover, if we want to have the heuristic value be equal to $-1$ for the case $n_A=n_B=0$ ($A$ loses immediately), and $+1$ for the case $n_A=1, n_B=0$ ($B$ loses after $A$'s move), we should select $\alpha = 2, z = -1/2$. Again, those should have no bearing on the performance of the algorithm.
+
 
 \subsubsection{Validating the parameter choices}
 \label{distancechoices}
@@ -70,11 +73,11 @@ For comparison, we provide results of the competition\footnote{Raw data is avail
 \label{DistanceCompetition}
 \end{table}%
 
-The table suggests that, contrary to the theoretical analysis in \ref{DistanceAnalysis}, the Variant 1 heuristic is the strongest, and 3 and 4 are the weakest.
+The table suggests that, in agreement with the theoretical analysis in \ref{DistanceAnalysis}, the different variants of the heuristic have approximately equal strength.
 
-Unfortunately, the standard deviation for the case of tossing a perfect coin 700 times comprises about 2\%, which means that the results in the average column cannot rule out the hypothesis that all of the opponents have equal strength. Thus the confidence in the results above is not very high.
+Specifically, the standard deviation for the case of tossing a perfect coin 700 times comprises about 2\%, which means that the results in the average column are compatible with the hypothesis that all of the opponents have equal strength. 
 
-In an attempt to further examine the question of parameters, we put Variant 1 against Variant 4 in two other competitions with 500 matches, not only on a standard $7\times 7$, but also on a $13\times 13$ boards. The results, presented in Table \ref{DistanceBoards}, do not strongly support selecting one choice over the other. 
+In an attempt to further examine the question of parameter $f$, we put Variant 1 against Variant 4 in two other competitions with 500 matches, not only on a standard $7\times 7$, but also on a $13\times 13$ boards. The results, presented in Table \ref{DistanceBoards}, also do not strongly support selecting one choice over the other. 
 
 \begin{table}[htp]
 \caption{Further comparison of distance heuristic variants 1 and 4}
@@ -90,24 +93,27 @@ In an attempt to further examine the question of parameters, we put Variant 1 ag
 \label{DistanceBoards}
 \end{table}%
 
-In combination with the theoretical analysis, we therefore make a choice to take $D(-1/2, 2, \textrm{sigmoid})$ as the preferred distance heuristic.
+The sigmoid function in Variant 4 and might slightly outperform Variant 1 on the $7\times 7$ board (although the confidence of this result is, unfortunately, not very high). We therefore make a choice to take $D(-1/2, 2, \textrm{sigmoid})$ as the preferred distance heuristic.
 
 
 \subsection{Free Moves Heuristic $F(d, u, \beta)$}
 
 \subsubsection{Definition}
-We will attempt to perform a random unroll of the board and compute the amount of free moves available at each step. Naturally, the moves available to the opponent $B$ should count as a negative for the player $A$. We will need to restrict us to certain maximal depth $d$, so $F(d, u, \beta)$ will be computed recursively starting from $F(0, u, \beta) = 0$.
+
+We will attempt to perform a random unroll of the board and compute the amount of free moves available at each step. Unlike the standard depth search, we will try to produce a single weighted combination of free moves available at after a few moves and will use parameter $\beta$ for the purpose of weighting. Naturally, the moves available to the opponent $B$ should count as a negative for the player $A$, so we will assume $\beta > 0$ add multiply a contribution at each successive level by $-\beta$.
+
+We restrict the computation to a maximal depth $d$, so $F(d, u, \beta)$ will be computed recursively starting from $F(0, u, \beta) = 0$.
 
 For a given board $\mathfrak b$ and $d>0$, the \textit{free moves score} will be therefore defined as
 
 $$ F_{\mathfrak b}(d, u, \beta) = n - {\beta \over \mathrm{min}(v, n)}  \sum_{{\mathfrak b}' \in S({\mathfrak b}, u)} F_{{\mathfrak b}'}(d-1, u, \beta),$$
 
-where $n$ is the number of available moves for the current player, $S({\mathfrak b}, u)$ is the set of no more than $u$ boards obtained by selecting a random subset of the possible moves, and $\beta$ is a positive number that is part of the definition of the score function. 
+where $n$ is the number of available moves for the current player and $S({\mathfrak b}, u)$ is the set of no more than $u$ successor boards obtained by applying a random subset of the possible moves to $\mathfrak b$. 
 
 \subsubsection{Selection of $\beta$}
 \label{FreeMoveBetaCompetitions}
 
-We will first consider the simplest case of looking forward a single step ahead and attempt to find a preferred value for parameter $\beta$ by comparing a few of the heuristics in 200 matches against alphabeta improved agent. According to the results in Table \ref{FreeMoveBetaCompetition}, values of $\beta$ around $1.2$ seem to be the most promising (variant numbers correspond to those given in \texttt{FreeMoveBetaCompetition.png}).
+We will first consider the simplest case of looking forward a single step ahead and attempt to find a preferred value for the parameter $\beta$ among several choices of the heuristics using 200 matches for each against alphabeta Improved agent. According to the results in Table \ref{FreeMoveBetaCompetition}, values of $\beta$ around $1.2$ seem to be the most promising (variant numbers correspond to those given in \texttt{FreeMoveBetaCompetition.png}).
 
 \begin{table}[htp]
 \caption{Free move heuristics competition ($d=2$, $u=3$, variance of $\beta$)}
@@ -125,12 +131,12 @@ We will first consider the simplest case of looking forward a single step ahead 
 \end{table}%
 
 This corresponds to our intuition that making an aggressive move that takes away
-the choices from the opponent is slightly more important than keeping choices for yourself.
+the choices from the opponent is slightly more important than defensivey keeping choices for yourself.
 
 \subsubsection{Selection of $d$ and $u$}
 \label{FreeMoveDUCompetitions}
 
-Unrolling the position tree deeper or considering more moves at each depth would be likely to give us a better heuristic value at the cost of time: the total number of positions analysed in a typical computation $T = 1+u+u^2+\dots+u^{d-1}$. Table \ref{FreeMoveDUCompetition} compares several agents that increase $d$ or $u$ in a competition of 500 matches each and the standard timeout of $250\textrm{ms}$.
+Unrolling the position tree deeper or considering more moves at each depth would be likely to give us a better heuristic value at the cost of time: the total number of positions analysed in a typical computation $T = 1+u+u^2+\dots+u^{d-1}$. Table \ref{FreeMoveDUCompetition} compares several agents that increase $d$ or $u$ in a competition of 500 matches each and the standard timeout of $250\textrm{ms}$ on a recent Macbook Pro.
 
 \begin{table}[htp]
 \caption{Free move heuristics competition ($\beta = 1.2$)}
@@ -147,13 +153,13 @@ Unrolling the position tree deeper or considering more moves at each depth would
 \label{FreeMoveDUCompetition}
 \end{table}%
 
-The results seem to suggest that the variants 4 and 9 are the strongest scores. We will take them as two final heuristic choices.
+The results seem to suggest that the variants 4 and 9 provide the strongest scores. We will take them as two final heuristic choices.
 
 
 
 \section{Final Choices}
 
-We combine the results of \ref{distancechoices} and \ref{FreeMoveDUCompetitions} to select three heuristic functions and present the results of a competition between them and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition}.
+We combine the results of \ref{distancechoices} and \ref{FreeMoveDUCompetitions} to select three heuristic functions and present the results of a competition between them and \texttt{open\_move\_score}, \texttt{center\_score} and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition} (each cell corresponds to 500 matches on a $7\times 7$ board).
 
 \begin{table}[htp]
 \caption{Final heuristics competition}
