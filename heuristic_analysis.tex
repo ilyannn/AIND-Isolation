@@ -130,7 +130,7 @@ the choices from the opponent is slightly more important than keeping choices fo
 \subsubsection{Selection of $d$ and $u$}
 \label{FreeMoveDUCompetitions}
 
-Unrolling the position tree deeper or considering more moves at each depth would be likely to give us a better heuristic value at the cost of time: the total number of positions analysed in a typical computation $T = 1+u+u^2+\dots+u^{d-1}$. Table \ref{FreeMoveDUCompetition} compares several agents that increase $d$ or $u$ in a competition of 200 matches each and the standard timeout of $250\textrm{ms}$.
+Unrolling the position tree deeper or considering more moves at each depth would be likely to give us a better heuristic value at the cost of time: the total number of positions analysed in a typical computation $T = 1+u+u^2+\dots+u^{d-1}$. Table \ref{FreeMoveDUCompetition} compares several agents that increase $d$ or $u$ in a competition of 500 matches each and the standard timeout of $250\textrm{ms}$.
 
 \begin{table}[htp]
 \caption{Free move heuristics competition ($\beta = 1.2$)}
@@ -138,17 +138,20 @@ Unrolling the position tree deeper or considering more moves at each depth would
 \begin{tabular}{c|cc|c|rccccc}
    & $d$ & $u$ & $T$  & Wins against 4 & Improved \\
    \hline
- Variant 4 &    2 & 3   & 4   & & $\%$ \\
- Variant 7 &    2 & 10  & 11 & & $\%$ \\
- Variant 8 &    3 & 4   & 21  & & $\%$ \\
- Variant 9 &    4 & 2   & 15  & & $\%$ \\
+ Variant 4 &    2 & 3   & 4   & $48.4\%$ & $52.8\%$ \\
+ Variant 7 &    2 & 10  & 11  & $49.2\%$ & $51.0\%$ \\
+ Variant 8 &    3 & 4   & 21  & $50.0\%$ & $49.8\%$ \\
+ Variant 9 &    4 & 2   & 15  & $50.2\%$ & $53.0\%$ \\
 \end{tabular}
 \end{center}
 \label{FreeMoveDUCompetition}
 \end{table}%
 
-\section{Final Choices}
+The results seem to suggest that the variants 4 and 9 are the strongest scores. We will take them as two final heuristic choices.
 
+
+
+\section{Final Choices}
 
 We combine the results of \ref{distancechoices} and \ref{FreeMoveDUCompetitions} to select three heuristic functions and present the results of a competition between them and \texttt{improved\_score} heuristics in Table \ref{FinalCompetition}.
 
@@ -159,8 +162,8 @@ We combine the results of \ref{distancechoices} and \ref{FreeMoveDUCompetitions}
    & Function Name & Heuristic & 1 & 2 & 3 & Open & Center & Improved \\
    \hline
 1 & \texttt{custom\_score}    & $D(-1/2, 2, \textrm{sigmoid})$ & & & & & &  \\
-2 & \texttt{custom\_score\_2} & $F(d, u, \beta)$               & & & & & &  \\
-3 & \texttt{custom\_score\_3} & $F(d, u, \beta)$               & & & & & &  
+2 & \texttt{custom\_score\_2} & $F(2, 3, 1.2)$               & & & & & &  \\
+3 & \texttt{custom\_score\_3} & $F(4, 2, 1.2)$               & & & & & &  
 \end{tabular}
 \end{center}
 \label{FinalCompetition}
