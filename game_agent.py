@@ -181,7 +181,7 @@ def usefulness_sigmoid(x, y):
 # ------------------------------ Distance Score ------------------------------------
 
 
-def distance_score(game, player, alpha, z, f):
+def distance_score(game, player, z, alpha, f):
     """Compute distance score D(z, alpha, f)
 
     :param game: `isolation.Board`
