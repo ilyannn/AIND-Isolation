@@ -125,8 +125,6 @@ def play_matches(cpu_agents, test_agents, num_matches):
 
 def main():
 
-    NUM_MATCHES = 250
-
     # Define two agents to compare -- these agents will play from the same
     # starting position against the same adversaries in the tournament
     test_agents = [
@@ -142,9 +140,9 @@ def main():
 #        Agent(MinimaxPlayer(score_fn=open_move_score), "MM_Open"),
 #        Agent(MinimaxPlayer(score_fn=center_score), "MM_Center"),
 #        Agent(MinimaxPlayer(score_fn=improved_score), "MM_Improved"),
+        Agent(AlphaBetaPlayer(score_fn=improved_score), "AB_Improved"),
         Agent(AlphaBetaPlayer(score_fn=open_move_score), "AB_Open"),
         Agent(AlphaBetaPlayer(score_fn=center_score), "AB_Center"),
-        Agent(AlphaBetaPlayer(score_fn=improved_score), "AB_Improved"),
         Agent(AlphaBetaPlayer(score_fn=custom_score), "AB_Custom"),
         Agent(AlphaBetaPlayer(score_fn=custom_score_2), "AB_Custom_2"),
         Agent(AlphaBetaPlayer(score_fn=custom_score_3), "AB_Custom_3"),
@@ -154,7 +152,7 @@ def main():
     print("{:^74}".format("*************************"))
     print("{:^74}".format("Playing Matches"))
     print("{:^74}".format("*************************"))
-    play_matches(cpu_agents, test_agents, NUM_MATCHES)
+    play_matches(cpu_agents, test_agents, 250)
 
 
 def main_freemoves():

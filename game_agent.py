@@ -56,7 +56,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 2, 3, 1.2)
+    return custom_score_free_moves4(game, player)
 
 
 def custom_score_3(game, player):
@@ -83,7 +83,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return free_moves_score(game, player, 4, 2, 1.2)
+    return custom_score_free_moves9(game, player)
 
 
 # ------------------------------ Helpers ------------------------------------
@@ -240,7 +240,7 @@ def custom_score_distance4(game, player):
 # ------------------------------ Free Moves Score ------------------------------------
 
 
-def free_moves_score(game, player, depth, unroll_moves=3, beta_discount=1):
+def free_moves_score(game, player, depth, unroll_moves=3, beta_discount=1.0):
     """Compute free moves score F(d, u, beta)
 
     :param game: `isolation.Board`
